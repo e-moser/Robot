@@ -4,10 +4,10 @@ public class CalcEngine {
     
   //Everything in Meters
   public static double velo = 0.0;
-  static double distance = 0.0;
-  static double robotHeight = 0.0;
-  static double targetHeight = 0.0;
-  static double angle = 0.0;
+  public static double distance = 0.0;
+  public static double robotHeight = 0.0;
+  public static double targetHeight = 0.0;
+  public static double angle = 0.0;
 
   public static void getVelo(){
       
