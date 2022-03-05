@@ -13,6 +13,8 @@ public class DriveDistance extends CommandBase {
   private final Drive m_drive;
   private Double m_distance;
   private Double lTarget, rTarget;
+  //We set the target this far past the actual, but stops when it hits the actual
+  private final double errorMargin = 0.2;
   private final double distancePerRotation = Constants.wheelDiameterFeet * Math.PI;
 
   // Distance is in inches.
@@ -32,8 +34,8 @@ public class DriveDistance extends CommandBase {
       double l = m_drive.getLeftRotations();
       double r = m_drive.getRightRotations();
 
-      lTarget = m_drive.getLeftRotations() + (m_distance / distancePerRotation) + 0.3;
-      rTarget = m_drive.getRightRotations() + (m_distance / distancePerRotation) + 0.3;
+      lTarget = m_drive.getLeftRotations() + (m_distance / distancePerRotation) + errorMargin;
+      rTarget = m_drive.getRightRotations() + (m_distance / distancePerRotation) + errorMargin;
       
 
       
@@ -61,10 +63,10 @@ public class DriveDistance extends CommandBase {
   @Override
   public boolean isFinished() {
     if (m_distance < 0) {
-        return (m_drive.getLeftRotations() <= lTarget + 0.3 &&
-                m_drive.getRightRotations() <= rTarget + 0.3);
+        return (m_drive.getLeftRotations() <= lTarget + errorMargin &&
+                m_drive.getRightRotations() <= rTarget + errorMargin);
     }
-    return (m_drive.getLeftRotations() >= lTarget - 0.3 &&
-                m_drive.getRightRotations() >= rTarget - 0.3);
+    return (m_drive.getLeftRotations() >= lTarget - errorMargin &&
+                m_drive.getRightRotations() >= rTarget - errorMargin);
   }
 }
