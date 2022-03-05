@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoIndex;
 import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.DriveRobot;
-import frc.robot.commands.FrontIntake;
+import frc.robot.commands.TankDriveRobot;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.LaunchGroup;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SwitchAngle;
@@ -66,7 +66,7 @@ public class RobotContainer {
         m_limelight = new LimelightSim();
     }
 
-    m_drive.setDefaultCommand(new DriveRobot(m_drive, controller1::getLeftX, controller1::getLeftY));
+    m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
     m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
   
@@ -92,7 +92,7 @@ public class RobotContainer {
     JoystickButton x3 = new JoystickButton(controller3, XboxController.Button.kX.value);
     JoystickButton b3 = new JoystickButton(controller3, XboxController.Button.kB.value);
 
-    a.whileHeld(new FrontIntake(m_intake));
+    a.whileHeld(new RunIntake(m_intake));
     a2.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
     x3.whenPressed(new SwitchIntakeSolenoid(m_intakeSolenoid));
     b3.whenPressed(new SwitchAngle(m_launch));
