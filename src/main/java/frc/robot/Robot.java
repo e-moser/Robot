@@ -30,9 +30,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
-//import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 
@@ -97,7 +98,7 @@ public class Robot extends TimedRobot
 
   // These two components are the motor and PID controller for the shooter
   PWMTalonSRX pwmTalonSRX;
-  //PIDSubsystem pidSubsystem;
+  PIDSubsystem pidSubsystem;
 
   // The value of these three constants will need to be determined later
   double Kp = 0.04f;
@@ -123,6 +124,8 @@ public class Robot extends TimedRobot
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    CameraServer.startAutomaticCapture();
 
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tv = table.getEntry("tv");
@@ -205,20 +208,19 @@ public class Robot extends TimedRobot
         yeetMode = !yeetMode;
       }
       if (yeetMode) {
-        if(joystick1.getXButton()){
-          drive.arcadeDrive(joystick1.getLeftY() * 1.0f, joystick1.getLeftX() * 1.0f, false);
+        if(joystick2.getAButton()){
+          drive.arcadeDrive(joystick1.getLeftX() * 1.0f, joystick1.getLeftY() * 1.0f, false);
         }
         else{
-          drive.arcadeDrive(-joystick1.getLeftY() * 1.0f, joystick1.getLeftX() * 1.0f, false);
+            drive.arcadeDrive(joystick1.getLeftX() * 1.0f, -joystick1.getLeftY() * 1.0f, false);
         }
-      }
-      
+      } 
       else {
-        if(joystick1.getXButton()){
-          drive.arcadeDrive(joystick1.getLeftY() * 0.75f, joystick1.getLeftX() * 0.9f, false);
+        if(joystick2.getAButton()){
+          drive.arcadeDrive(joystick1.getLeftX() * 0.75f, joystick1.getLeftY() * 0.9f, false);
         }
         else{
-          drive.arcadeDrive(-joystick1.getLeftY() * 0.75f, joystick1.getLeftX() * 0.90f, false);
+          drive.arcadeDrive(joystick1.getLeftX() * 0.75f, -joystick1.getLeftY() * 0.90f, false);
         }
       }
       left1.set(ControlMode.PercentOutput, left2.getMotorOutputPercent());
