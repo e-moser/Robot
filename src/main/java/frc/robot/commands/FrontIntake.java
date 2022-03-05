@@ -39,13 +39,13 @@ public class FrontIntake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.stopFront();
+    //m_subsystem.stopFront();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((System.currentTimeMillis() - m_startTime) < 3000){
+    if((System.currentTimeMillis() - m_startTime) < 1000){
       return false;
     }
     return true;

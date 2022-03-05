@@ -22,18 +22,18 @@ public class Drive extends SubsystemBase {
 
 
     private CANSparkMax leftFront = new CANSparkMax(1, MotorType.kBrushless);
-    private CANSparkMax leftBack = new CANSparkMax(2, MotorType.kBrushless);
-    private CANSparkMax rightFront = new CANSparkMax(3, MotorType.kBrushless);
+    //private CANSparkMax leftBack = new CANSparkMax(2, MotorType.kBrushless);
+    //private CANSparkMax rightFront = new CANSparkMax(3, MotorType.kBrushless);
     private CANSparkMax rightBack = new CANSparkMax(4, MotorType.kBrushless);
     private SparkMaxPIDController leftFrontPidController;
     private SparkMaxPIDController leftBackPidController;
     private SparkMaxPIDController rightFrontPidController;
     private SparkMaxPIDController rightBackPidController;
-    private MotorControllerGroup leftGroup = new MotorControllerGroup(leftFront, leftBack);
-    private MotorControllerGroup rightGroup = new MotorControllerGroup(rightFront, rightBack);
+    private MotorControllerGroup leftGroup = new MotorControllerGroup(leftFront);//FIXME add leftBack
+    private MotorControllerGroup rightGroup = new MotorControllerGroup(rightBack);//FIXME add rightFront
     private RelativeEncoder leftFrontEncoder = leftFront.getEncoder();
-    private RelativeEncoder leftBackEncoder = leftBack.getEncoder();
-    private RelativeEncoder rightFrontEncoder = rightFront.getEncoder();
+    //private RelativeEncoder leftBackEncoder = leftBack.getEncoder();
+    //private RelativeEncoder rightFrontEncoder = rightFront.getEncoder();
     private RelativeEncoder rightBackEncoder = rightBack.getEncoder();
 
     private DifferentialDrive driveDifferential = new DifferentialDrive(leftGroup, rightGroup);
@@ -50,7 +50,7 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Velocity", leftFrontEncoder.getVelocity());
-    SmartDashboard.putNumber("Right Velocity", rightFrontEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Velocity", rightBackEncoder.getVelocity());//FIXME change to back
   }
 
   @Override
@@ -67,11 +67,11 @@ public class Drive extends SubsystemBase {
   }
 
   public double getRightRotations() {
-    return rightFrontEncoder.getPosition();
+    return rightBackEncoder.getPosition();//FIXME change to front
   }
 
   public void setRightRotations(double target) {
-    rightFrontPidController.setReference(target, CANSparkMax.ControlType.kPosition);
+    rightBackPidController.setReference(target, CANSparkMax.ControlType.kPosition);
   }
 
   public void doInit() {
@@ -91,8 +91,8 @@ public class Drive extends SubsystemBase {
      * parameters will not persist between power cycles
      */
     leftFront.restoreFactoryDefaults();
-    leftBack.restoreFactoryDefaults();
-    rightFront.restoreFactoryDefaults();
+    //leftBack.restoreFactoryDefaults(); //FIXME uncomment
+    //rightFront.restoreFactoryDefaults(); //FIXME uncomment
     rightBack.restoreFactoryDefaults();
 
     /**
@@ -101,8 +101,8 @@ public class Drive extends SubsystemBase {
      * CANSparkMax object
      */
     leftFrontPidController = leftFront.getPIDController();
-    leftBackPidController = leftBack.getPIDController();
-    rightFrontPidController = rightFront.getPIDController();
+    //leftBackPidController = leftBack.getPIDController();
+    //rightFrontPidController = rightFront.getPIDController(); //FIXME uncomment
     rightBackPidController = rightBack.getPIDController();
 
      /**
@@ -121,7 +121,7 @@ public class Drive extends SubsystemBase {
     leftFrontPidController.setFF(kFF);
     leftFrontPidController.setOutputRange(kMinOutput, kMaxOutput);
 
-    leftBackPidController.setP(kP);
+    /*leftBackPidController.setP(kP);
     leftBackPidController.setI(kI);
     leftBackPidController.setD(kD);
     leftBackPidController.setIZone(kIz);
@@ -134,7 +134,7 @@ public class Drive extends SubsystemBase {
     rightFrontPidController.setIZone(kIz);
     rightFrontPidController.setFF(kFF);
     rightFrontPidController.setOutputRange(kMinOutput, kMaxOutput);
-
+*/
     rightBackPidController.setP(kP);
     rightBackPidController.setI(kI);
     rightBackPidController.setD(kD);

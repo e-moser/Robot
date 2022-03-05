@@ -32,16 +32,19 @@ public class DriveDistance extends CommandBase {
       double l = m_drive.getLeftRotations();
       double r = m_drive.getRightRotations();
 
-      lTarget = m_drive.getLeftRotations() + (m_distance / distancePerRotation);
-      rTarget = m_drive.getRightRotations() + (m_distance / distancePerRotation);
+      lTarget = m_drive.getLeftRotations() + (m_distance / distancePerRotation) + 0.3;
+      rTarget = m_drive.getRightRotations() + (m_distance / distancePerRotation) + 0.3;
       
-      m_drive.setLeftRotations(lTarget);
-      m_drive.setRightRotations(rTarget);
+
+      
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+      
+      m_drive.setLeftRotations(lTarget);
+      m_drive.setRightRotations(rTarget);
   }
 
   // Called once the command ends or is interrupted.
@@ -58,10 +61,10 @@ public class DriveDistance extends CommandBase {
   @Override
   public boolean isFinished() {
     if (m_distance < 0) {
-        return (m_drive.getLeftRotations() <= lTarget &&
-                m_drive.getRightRotations() <= rTarget);
+        return (m_drive.getLeftRotations() <= lTarget + 0.3 &&
+                m_drive.getRightRotations() <= rTarget + 0.3);
     }
-    return (m_drive.getLeftRotations() >= lTarget &&
-                m_drive.getRightRotations() >= rTarget);
+    return (m_drive.getLeftRotations() >= lTarget - 0.3 &&
+                m_drive.getRightRotations() >= rTarget - 0.3);
   }
 }
