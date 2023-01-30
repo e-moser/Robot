@@ -4,18 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.EncoderType;
-import com.revrobotics.REVPhysicsSim;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -23,34 +11,30 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.DoubleSupplier;
 
 public class SimDrive extends Drive {
-  
+
   public SimDrive() {
 
     SmartDashboard.putData("field", m_field);
 
-    odometer = new DifferentialDriveOdometry(dtSim.getHeading(), leftEncoder.getDistance(), rightEncoder.getDistance());
-    if(RobotBase.isSimulation()){
-    gyroSim = new ADXRS450_GyroSim(m_gyro);
-    }
-    else{
+    odometer =
+        new DifferentialDriveOdometry(
+            dtSim.getHeading(), leftEncoder.getDistance(), rightEncoder.getDistance());
+    if (RobotBase.isSimulation()) {
+      gyroSim = new ADXRS450_GyroSim(m_gyro);
+    } else {
       gyroSim = null;
     }
   }
@@ -74,23 +58,37 @@ public class SimDrive extends Drive {
 
   private static DifferentialDrive driveTrain = new DifferentialDrive(leftGroup, rightGroup);
 
-  private static DifferentialDrivetrainSim dtSim = new DifferentialDrivetrainSim(DCMotor.getNeo550(2), 8.451, 6, 57, Units.inchesToMeters(3), Units.inchesToMeters(22.5), VecBuilder.fill(0.01, 0.01, 0.0002, 0.2, 0.2, 0.01, 0.01));
+  private static DifferentialDrivetrainSim dtSim =
+      new DifferentialDrivetrainSim(
+          DCMotor.getNeo550(2),
+          8.451,
+          6,
+          57,
+          Units.inchesToMeters(3),
+          Units.inchesToMeters(22.5),
+          VecBuilder.fill(0.01, 0.01, 0.0002, 0.2, 0.2, 0.01, 0.01));
 
   private static ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
   private final ADXRS450_GyroSim gyroSim;
-  
-  public void setTankDrive(DoubleSupplier lSpeed, DoubleSupplier rSpeed, Double pOutput){
+
+  public void setTankDrive(DoubleSupplier lSpeed, DoubleSupplier rSpeed, Double pOutput) {
 
     driveTrain.tankDrive(lSpeed.getAsDouble() * pOutput, rSpeed.getAsDouble() * pOutput);
+  }
+
+  public void setArcadeDrive(Double speed, Double rotation) {
+    driveTrain.arcadeDrive(speed, rotation);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    odometer.update(Rotation2d.fromDegrees(getHeading()), leftEncoder.getDistance(), rightEncoder.getDistance());
+    odometer.update(
+        Rotation2d.fromDegrees(getHeading()),
+        leftEncoder.getDistance(),
+        rightEncoder.getDistance());
     m_field.setRobotPose(odometer.getPoseMeters());
-
   }
 
   @Override
@@ -99,7 +97,9 @@ public class SimDrive extends Drive {
 
     dtSim.update(0.02);
 
-    dtSim.setInputs(leftGroup.get() * RobotController.getBatteryVoltage() * -1, rightGroup.get() * RobotController.getBatteryVoltage() * -1);
+    dtSim.setInputs(
+        leftGroup.get() * RobotController.getBatteryVoltage() * -1,
+        rightGroup.get() * RobotController.getBatteryVoltage() * -1);
 
     lEncSim.setDistance(dtSim.getLeftPositionMeters());
     lEncSim.setRate(dtSim.getLeftVelocityMetersPerSecond());
@@ -108,7 +108,7 @@ public class SimDrive extends Drive {
     gyroSim.setAngle(-dtSim.getHeading().getDegrees());
   }
 
-  public double getHeading(){
+  public double getHeading() {
     return Math.IEEEremainder(m_gyro.getAngle(), 360) * -1;
   }
 }

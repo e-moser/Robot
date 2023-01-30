@@ -4,10 +4,8 @@
 
 package frc.robot.subsystems;
 
-import org.photonvision.PhotonCamera;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.photonvision.PhotonCamera;
 
 public class Photon extends SubsystemBase {
 
@@ -15,13 +13,13 @@ public class Photon extends SubsystemBase {
 
   private PhotonCamera camera = new PhotonCamera("photonvision");
 
-  public boolean hasTarget(){
+  public boolean hasTarget() {
     var results = camera.getLatestResult();
     boolean hasTarget = results.hasTargets();
     return hasTarget;
   }
 
-  public double getYaw(){
+  public double getYaw() {
     var results = camera.getLatestResult();
     double yaw = results.getBestTarget().getYaw();
     return yaw;

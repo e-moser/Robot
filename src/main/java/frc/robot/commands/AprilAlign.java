@@ -4,19 +4,16 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Photon;
-
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Photon;
 
 /** An example command that uses an example subsystem. */
 public class AprilAlign extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_drive;
+
   private final Photon m_photon;
   private final double m_angularD;
   private final double m_angularP;
@@ -47,17 +44,15 @@ public class AprilAlign extends CommandBase {
   @Override
   public void execute() {
 
-    if(m_photon.hasTarget()){
-      
+    if (m_photon.hasTarget()) {
+
       rotationSpeed = -turnController.calculate(m_photon.getYaw(), 0);
 
-      m_drive.setArcadeDrive(0, rotationSpeed);
+      m_drive.setArcadeDrive(0.0, rotationSpeed);
 
+    } else {
+      m_drive.setArcadeDrive(0.0, 0.0);
     }
-    else{
-      m_drive.setArcadeDrive(0, 0);
-    }
-
   }
 
   // Called once the command ends or is interrupted.

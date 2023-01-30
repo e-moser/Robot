@@ -4,17 +4,15 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.ExampleSubsystem;
-
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Drive;
+import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
 public class DriveArcade extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_subsystem;
+
   private final DoubleSupplier m_fSpeed;
   private final DoubleSupplier m_rotation;
 
@@ -34,7 +32,7 @@ public class DriveArcade extends CommandBase {
   @Override
   public void execute() {
 
-    //m_subsystem.setArcadeDrive(m_fSpeed, m_rotation);
+    // m_subsystem.setArcadeDrive(m_fSpeed, m_rotation);
 
   }
 

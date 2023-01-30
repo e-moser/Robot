@@ -32,6 +32,10 @@ public class Drive extends SubsystemBase {
     driveTrain.tankDrive(lSpeed.getAsDouble() * pOutput, rSpeed.getAsDouble() * pOutput);
   }
 
+  public void setArcadeDrive(Double speed, Double rotation) {
+    driveTrain.arcadeDrive(speed, rotation);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
