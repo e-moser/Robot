@@ -5,11 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AprilAlign;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveTank;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Photon;
 import frc.robot.subsystems.RealDrive;
 import frc.robot.subsystems.SimDrive;
 
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -32,8 +35,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //Dont remove example until autons are programmed
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private Drive m_drive;
   private final Drive m_realDrive = new RealDrive();
   private final SimDrive m_simDrive = new SimDrive();
+  private final Photon m_photon = new Photon();
 
   private final XboxController leftStick = new XboxController(0);
   private final XboxController rightStick = new XboxController(1);
@@ -48,10 +53,12 @@ public class RobotContainer {
     configureBindings();
 
     if(RobotBase.isSimulation()){
-      m_simDrive.setDefaultCommand(new DriveTank(m_simDrive, leftStick::getLeftY, rightStick::getLeftY, speed));
+      m_simDrive.setDefaultCommand(new DriveTank(m_simDrive, leftStick::getLeftY, leftStick::getRightY, speed));
+      m_drive = m_simDrive;
     }
     else{
       m_realDrive.setDefaultCommand(new DriveTank(m_realDrive, leftStick::getLeftY, rightStick::getLeftY, speed));
+      m_drive = m_realDrive;
     }
   }
 
@@ -65,6 +72,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    JoystickButton oneA = new JoystickButton(leftStick, 1);
+
+    oneA.whileTrue(new AprilAlign(m_realDrive, m_photon, 5, 0.001));
 
   }
 

@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -73,7 +74,7 @@ public class SimDrive extends Drive {
 
   private static DifferentialDrive driveTrain = new DifferentialDrive(leftGroup, rightGroup);
 
-  private static DifferentialDrivetrainSim dtSim = new DifferentialDrivetrainSim(DCMotor.getNeo550(2), 8.451, 6, 57, Units.inchesToMeters(3), Units.inchesToMeters(22.5), null);
+  private static DifferentialDrivetrainSim dtSim = new DifferentialDrivetrainSim(DCMotor.getNeo550(2), 8.451, 6, 57, Units.inchesToMeters(3), Units.inchesToMeters(22.5), VecBuilder.fill(0.01, 0.01, 0.0002, 0.2, 0.2, 0.01, 0.01));
 
   private static ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
   private final ADXRS450_GyroSim gyroSim;
