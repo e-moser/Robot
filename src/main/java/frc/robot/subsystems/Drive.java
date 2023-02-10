@@ -4,12 +4,10 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.DoubleSupplier;
 
 public class Drive extends SubsystemBase {
 
-    public void setTankDrive(DoubleSupplier m_lSpeed, DoubleSupplier m_rSpeed, double m_pOutput) {
-    }
+  public void setTankDrive(DoubleSupplier m_lSpeed, DoubleSupplier m_rSpeed, double m_pOutput) {}
 }
