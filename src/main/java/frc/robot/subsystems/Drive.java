@@ -22,7 +22,7 @@ public class Drive extends SubsystemBase {
   private CANSparkMax leftBack;
   private CANSparkMax rightBack;
 
-  public void setMotors(){
+  public void setMotors() {
     leftFront = new CANSparkMax(1, MotorType.kBrushless);
     leftBack = new CANSparkMax(2, MotorType.kBrushless);
     rightFront = new CANSparkMax(3, MotorType.kBrushless);
