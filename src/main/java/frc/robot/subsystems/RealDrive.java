@@ -27,7 +27,7 @@ public class RealDrive extends Drive {
   private DifferentialDrive driveTrain = new DifferentialDrive(leftGroup, rightGroup);
 
   @Override
-  public void setTankDrive(DoubleSupplier lSpeed, DoubleSupplier rSpeed, double pOutput){
+  public void setTankDrive(DoubleSupplier lSpeed, DoubleSupplier rSpeed, double pOutput) {
 
     driveTrain.tankDrive(lSpeed.getAsDouble() * pOutput, rSpeed.getAsDouble() * pOutput);
   }

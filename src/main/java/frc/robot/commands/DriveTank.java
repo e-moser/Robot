@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-
 import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
