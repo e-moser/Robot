@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
+
 import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
@@ -27,8 +28,7 @@ public class DriveTank extends CommandBase {
     m_lSpeed = lSpeed;
     m_rSpeed = rSpeed;
     m_pOutput = pOutput;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_subsystem);
   }
 
   // Called when the command is initially scheduled.
