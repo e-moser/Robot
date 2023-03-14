@@ -80,6 +80,10 @@ public class Arm extends SubsystemBase {
     return armEnc.getPosition();
   }
 
+  public void zeroArm() {
+    armEnc.setPosition(0);
+  }
+
   public void setMotorVolts(double speed) {
     double position = getPosition();
 

@@ -4,11 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxLimitSwitch;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +32,7 @@ public class Claw extends SubsystemBase {
       new PIDController(RealConstants.kClawP, RealConstants.kClawI, RealConstants.kClawD);
 
   private RelativeEncoder clawEnc = clawMotor.getEncoder();
+  private AbsoluteEncoder clawAbsEnc = clawMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
   public Claw() {
     forewardLimit.enableLimitSwitch(true);
@@ -45,6 +48,8 @@ public class Claw extends SubsystemBase {
 
     clawMotor.setSoftLimit(SoftLimitDirection.kForward, RealConstants.clawForwardLimit);
     clawMotor.setSoftLimit(SoftLimitDirection.kReverse, RealConstants.clawReverseLimit);
+
+    clawAbsEnc.setPositionConversionFactor(RealConstants.clawAbsoluteConversionFactor);
 
     clawEnc.setPosition(0);
   }

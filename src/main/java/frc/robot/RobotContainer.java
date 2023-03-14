@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -100,12 +101,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     final JoystickButton rightStickTrigger = new JoystickButton(rightStick, 1);
+    final JoystickButton leftStickTrigger = new JoystickButton(leftStick, 1);
     final JoystickButton coDriverA = new JoystickButton(coDriver, XboxController.Button.kA.value);
     final JoystickButton coDriverB = new JoystickButton(coDriver, XboxController.Button.kB.value);
     final JoystickButton coDriverY = new JoystickButton(coDriver, XboxController.Button.kY.value);
     final JoystickButton coDriverX = new JoystickButton(coDriver, XboxController.Button.kX.value);
 
     rightStickTrigger.whileTrue(new SwitchGears(m_gearShifter));
+    leftStickTrigger.onTrue(new InstantCommand(m_arm::zeroArm, m_arm));
     coDriverA.whileTrue(new SetArmPosition(m_arm, -190));
     coDriverB.whileTrue(new SetArmPosition(m_arm, -15));
     coDriverX.whileTrue(new DriveBalance(Units.inchesToMeters(60), m_drive));
